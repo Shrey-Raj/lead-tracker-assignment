@@ -34,7 +34,6 @@ export default function LeadTable({ leads, onStatusChange }: LeadTableProps) {
               <TableHead className="px-6">Phone</TableHead>
               <TableHead className="px-6">Status</TableHead>
               <TableHead className="px-6">Created At</TableHead>
-              <TableHead className="px-6 text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -86,11 +85,6 @@ export default function LeadTable({ leads, onStatusChange }: LeadTableProps) {
                         day: "numeric",
                         year: "numeric",
                       })}
-                    </TableCell>
-                    <TableCell className="px-6 text-right">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground">
-                        <MoreVertical className="w-4 h-4" />
-                      </Button>
                     </TableCell>
                   </TableRow>
                 );

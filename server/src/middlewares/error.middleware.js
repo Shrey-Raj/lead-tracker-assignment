@@ -22,7 +22,7 @@ const errorHandler = (err, req, res, next) => {
     ...(process.env.NODE_ENV === "development" ? { stack: error.stack } : {}),
   };
 
-  console.error(err); // always log server-side
+  console.error(err);
 
   return res.status(error.statusCode).json(response);
 };

@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { Lead, CreateLeadPayload, LeadStatus, MetricsData, ApiResponse } from '@/types/lead';
+import { Lead, CreateLeadPayload, LeadStatus, MetricsResponse, ApiResponse, LeadListResponse, MetricsData } from '@/types/lead';
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1/leads',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,39 +14,35 @@ export const getErrorMessage = (error: unknown): string => {
   return 'An unexpected error occurred.';
 };
 
-// 1. Fetch Leads (List or Search)
-export const fetchLeads = async (searchQuery?: string): Promise<ApiResponse<Lead[]>> => {
+export const fetchLeads = async (searchQuery?: string): Promise<ApiResponse<LeadListResponse>> => {
     console.log("Fetching leads .....");
   if (searchQuery && searchQuery.trim().length > 0) {
-    const response = await API.get<ApiResponse<Lead[]>>('/seach', {
+    const response = await API.get<ApiResponse<LeadListResponse>>('/search', {
       params: { query: searchQuery },
     });
     return response.data;
   }
 
-  const response = await API.get<ApiResponse<Lead[]>>('/list');
+  const response = await API.get<ApiResponse<LeadListResponse>>('/list');
   return response.data;
 };
 
-// 2. Fetch Lead Metrics (GET /api/v1/leads/metrics)
-export const fetchMetrics = async (): Promise<ApiResponse<MetricsData>> => {
-  const response = await API.get<ApiResponse<MetricsData>>('/metrics');
+export const fetchMetrics = async (): Promise<ApiResponse<MetricsResponse>> => {
+  const response = await API.get<ApiResponse<MetricsResponse>>('/metrics');
   return response.data;
 };
 
-// 3. Create Lead (POST /api/v1/leads/create)
 export const createLead = async (payload: CreateLeadPayload): Promise<ApiResponse<Lead>> => {
   const response = await API.post<ApiResponse<Lead>>('/create', payload);
   return response.data;
 };
 
-// 4. Update Lead Status (PATCH /api/v1/leads/updateStatus?leadId=...)
 export const updateLeadStatus = async (
   leadId: string,
   status: LeadStatus
 ): Promise<ApiResponse<Lead>> => {
   const response = await API.patch<ApiResponse<Lead>>(
-    '/updateStatus',
+    '/update-status',
     { status },
     { params: { leadId } }
   );

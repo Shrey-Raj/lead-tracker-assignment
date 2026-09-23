@@ -4,6 +4,7 @@ import {
   updateLeadStatus,
   listLeads,
   searchLeads,
+  getLeadsMetrics,
 } from "../controllers/leads.controller.js";
 import {
   createLeadSchema,
@@ -18,5 +19,6 @@ router.post("/create", validate(createLeadSchema), createLead);
 router.get("/list", listLeads);
 router.patch("/update-status", validate(updateLeadStatusSchema), updateLeadStatus);
 router.get("/search", validate(searchLeadsSchema), searchLeads);
+router.get("/metrics", getLeadsMetrics);
 
 export default router;

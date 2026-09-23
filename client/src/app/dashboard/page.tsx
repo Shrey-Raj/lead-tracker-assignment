@@ -8,19 +8,16 @@ import LeadTable from "@/components/appComponents/dashboard/LeadTable";
 import AddLeadModal from "@/components/appComponents/dashboard/AddLeadModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Plus, Upload, Download } from "lucide-react";
-import { LeadStatus } from "@/types/lead";
+import { Search, Plus, Upload, Download, Loader2 } from "lucide-react";
+import { Lead, LeadStatus } from "@/types/lead";
 import { toast } from "sonner";
+
 
 export default function Dashboard() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log("================== [DASHBOARD RENDER] ==================");
-  console.log("[Dashboard] Current Search Term:", search);
-
-  // 1. Fetch Leads Query
   const { 
     data: leadsData, 
     isLoading: isLeadsLoading, 
@@ -30,19 +27,10 @@ export default function Dashboard() {
   } = useQuery({
     queryKey: ["leads", search],
     queryFn: async () => {
-      console.log("🚀 [useQuery: fetchLeads] START - Fetching leads with search:", search);
-      try {
-        const response = await fetchLeads(search);
-        console.log("✅ [useQuery: fetchLeads] SUCCESS - Response received:", response);
-        return response;
-      } catch (err) {
-        console.error("❌ [useQuery: fetchLeads] ERROR - Fetch failed:", err);
-        throw err;
-      }
+      return fetchLeads(search);
     },
   });
 
-  // 2. Fetch Metrics Query
   const { 
     data: metricsData, 
     isLoading: isMetricsLoading,
@@ -50,33 +38,18 @@ export default function Dashboard() {
   } = useQuery({
     queryKey: ["metrics"],
     queryFn: async () => {
-      console.log("🚀 [useQuery: fetchMetrics] START - Fetching metrics");
-      try {
-        const response = await fetchMetrics();
-        console.log("✅ [useQuery: fetchMetrics] SUCCESS - Response received:", response);
-        return response;
-      } catch (err) {
-        console.error("❌ [useQuery: fetchMetrics] ERROR - Fetch failed:", err);
-        throw err;
-      }
+      return fetchMetrics();
     },
   });
 
-  console.log("[Dashboard State] Leads Query Status:", leadsQueryStatus, "| isLoading:", isLeadsLoading);
-  console.log("[Dashboard State] Leads Raw Data Object:", leadsData);
-  console.log("[Dashboard State] Metrics Query Status:", metricsQueryStatus, "| isLoading:", isMetricsLoading);
-
-  // Handle toast notifications safely inside useEffect
   useEffect(() => {
     if (isLeadsError) {
-      console.error("[Dashboard Effect] Leads fetch error detected:", leadsError);
       toast.error("Failed to load leads", {
         description: getErrorMessage(leadsError),
       });
     }
   }, [isLeadsError, leadsError]);
 
-  // 3. Create Lead Mutation
   const createMutation = useMutation({
     mutationFn: createLead,
     onSuccess: () => {
@@ -92,7 +65,6 @@ export default function Dashboard() {
     },
   });
 
-  // 4. Update Lead Status Mutation
   const updateStatusMutation = useMutation({
     mutationFn: ({ leadId, status }: { leadId: string; status: LeadStatus }) =>
       updateLeadStatus(leadId, status),
@@ -108,55 +80,55 @@ export default function Dashboard() {
     },
   });
 
-  console.log("LEADS DATA  = ", leadsData);
-  // Extract array safely and log extracted array length
   const leads = Array.isArray(leadsData?.data?.leads) ? leadsData.data.leads : [];
-  const metrics = metricsData?.data;
-
-  console.log("[Dashboard State] Extracted Leads Array:", leads);
-  console.log("[Dashboard State] Extracted Leads Count:", leads.length);
-  console.log("========================================================");
+  const metrics = metricsData?.data?.metrics ;
 
   return (
-    <div className="min-h-screen bg-gray-50/50 p-6 md:p-10 max-w-7xl mx-auto">
+    <div className="min-h-screen w-full bg-gray-50/50 p-6 md:p-10 lg:px-14">
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Good Morning, Rohit! 👋</h1>
-          <p className="text-sm text-muted-foreground">Here's what's happening with your sales today.</p>
+          <h1 className="text-2xl font-bold text-gray-900">Hello 👋</h1>
+          <p className="text-sm text-muted-foreground">Track down your leads below.</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="outline" className="gap-2 shadow-sm">
-            <Upload className="w-4 h-4" /> Import
-          </Button>
-          <Button variant="outline" className="gap-2 shadow-sm">
+          <Button
+            variant="outline"
+            className="gap-2 shadow-sm transition-all duration-200 hover:shadow hover:-translate-y-0.5"
+          >
             <Download className="w-4 h-4" /> Export
           </Button>
-          <Button onClick={() => setIsModalOpen(true)} className="gap-2 bg-indigo-600 hover:bg-indigo-700 shadow-sm">
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="gap-2 bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+          >
             <Plus className="w-4 h-4" /> Add New
           </Button>
         </div>
       </div>
 
+      {/* Metric Summary Cards */}
+      <MetricCards metrics={metrics} isLoading={isMetricsLoading} />
+
       {/* Search Bar */}
-      <div className="relative mb-6">
-        <Search className="w-4 h-4 absolute left-3.5 top-3 text-muted-foreground" />
+      <div className="relative mb-6 max-w-xl">
+        <Search className="w-4 h-4 absolute left-3.5 top-3 text-muted-foreground transition-colors" />
         <Input
           type="text"
           placeholder="Search leads by name, email, or phone..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10 bg-white shadow-sm"
+          className="pl-10 bg-white shadow-sm transition-shadow duration-200 focus-visible:shadow-md"
         />
       </div>
 
-      {/* Metric Summary Cards */}
-      <MetricCards metrics={metrics} isLoading={isMetricsLoading} />
-
       {/* Lead Data Table */}
       {isLeadsLoading ? (
-        <div className="py-12 text-center text-muted-foreground">Loading leads...</div>
+        <div className="py-16 flex flex-col items-center justify-center gap-2 text-muted-foreground">
+          <Loader2 className="w-5 h-5 animate-spin text-indigo-500" />
+          <span className="text-sm">Loading leads...</span>
+        </div>
       ) : (
         <LeadTable
           leads={leads}
