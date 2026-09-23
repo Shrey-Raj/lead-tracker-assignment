@@ -8,7 +8,7 @@ A full-stack lead management platform built with Next.js, Node.js, Express.js, a
 
 * **Frontend App:** [Live Dashboard](https://lead-tracker-assignment-tau.vercel.app/dashboard)
 * **Backend API:** [API Server](https://lead-tracker-server.onrender.com/api/v1/healthcheck)
-* **Video Walkthrough:** [Watch YouTube Demo](https://www.google.com/search?q=YOUR_YOUTUBE_LINK_HERE&utm_source=gemini)
+* **Video Walkthrough:** [Watch YouTube Demo](https://youtu.be/QyQIwXU72oY)
 
 ---
 
