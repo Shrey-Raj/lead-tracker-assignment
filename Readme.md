@@ -40,6 +40,20 @@ The application is built using a modern decoupled full-stack architecture:
 
 ---
 
+## 🧪 Testing
+### Running Backend Tests
+Navigate to the server directory and execute Jest:
+```
+npm run test
+```
+
+<img src="./client/public/server-testing-logs.png" alt="Dashboard View" width="400" />
+
+- [Postman server API Collection](https://github.com/Shrey-Raj/lead-tracker-assignment/blob/main/server/lead-tracker.postman_collection.json)
+
+- Automated testing is implemented exclusively on the server side to ensure API contract integrity, controller logic reliability, and database interaction accuracy.
+
+
 ## 🚀 Setup Instructions
 
 ### Prerequisites
