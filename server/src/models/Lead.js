@@ -33,7 +33,7 @@ const LeadSchema = new mongoose.Schema(
   },
 );
 
-LeadSchema.index({ name: "text", email: "text", phone: "text" });
+LeadSchema.index({ name: "text", email: "text", phone: "text", status: "text" });
 LeadSchema.index({ status: 1 });
 
 export const Lead = mongoose.model("Lead", LeadSchema);

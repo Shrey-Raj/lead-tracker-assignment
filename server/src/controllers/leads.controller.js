@@ -37,6 +37,7 @@ const searchLeads = asyncHandler(async (req, res) => {
       { name: regex },
       { email: regex },
       { phone: regex },
+      { status: regex }
     ],
   });
 
