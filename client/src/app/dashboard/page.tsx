@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchLeads, fetchMetrics, createLead, updateLeadStatus, getErrorMessage } from "@/lib/api";
+import ExportLeadsButton from "@/components/appComponents/dashboard/ExportLeadsButton";
 import MetricCards from "@/components/appComponents/dashboard/MetricCards";
 import LeadTable from "@/components/appComponents/dashboard/LeadTable";
 import AddLeadModal from "@/components/appComponents/dashboard/AddLeadModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Plus, Upload, Download, Loader2 } from "lucide-react";
+import { Search, Plus, Download, Loader2 } from "lucide-react";
 import { Lead, LeadStatus } from "@/types/lead";
 import { toast } from "sonner";
 
@@ -85,45 +86,36 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen w-full bg-gray-50/50 p-6 md:p-10 lg:px-14">
-      {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Hello 👋</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Welcome, User👋</h1>
           <p className="text-sm text-muted-foreground">Track down your leads below.</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            className="gap-2 shadow-sm transition-all duration-200 hover:shadow hover:-translate-y-0.5"
-          >
-            <Download className="w-4 h-4" /> Export
-          </Button>
+          <ExportLeadsButton leads={leads} disabled={isLeadsLoading} />
           <Button
             onClick={() => setIsModalOpen(true)}
-            className="gap-2 bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+            className="gap-2 bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer"
           >
             <Plus className="w-4 h-4" /> Add New
           </Button>
         </div>
       </div>
 
-      {/* Metric Summary Cards */}
       <MetricCards metrics={metrics} isLoading={isMetricsLoading} />
 
-      {/* Search Bar */}
       <div className="relative mb-6 max-w-xl">
         <Search className="w-4 h-4 absolute left-3.5 top-3 text-muted-foreground transition-colors" />
         <Input
           type="text"
-          placeholder="Search leads by name, email, or phone..."
+          placeholder="Search leads by name, email, status or phone..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-10 bg-white shadow-sm transition-shadow duration-200 focus-visible:shadow-md"
         />
       </div>
 
-      {/* Lead Data Table */}
       {isLeadsLoading ? (
         <div className="py-16 flex flex-col items-center justify-center gap-2 text-muted-foreground">
           <Loader2 className="w-5 h-5 animate-spin text-indigo-500" />
@@ -136,7 +128,6 @@ export default function Dashboard() {
         />
       )}
 
-      {/* Add Lead Dialog */}
       <AddLeadModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
