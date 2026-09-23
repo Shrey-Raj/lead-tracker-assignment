@@ -38,6 +38,7 @@ export default function MetricCards({ metrics, isLoading }: MetricCardsProps) {
       icon: Users,
       iconBg: "bg-blue-50 text-blue-600",
       ring: "group-hover:ring-blue-100",
+      gradient: "bg-gradient-to-br from-blue-100/70 via-white to-white",
     },
     {
       title: metrics?.activePipeline?.title || "Active Pipeline",
@@ -48,6 +49,7 @@ export default function MetricCards({ metrics, isLoading }: MetricCardsProps) {
       icon: CheckCircle2,
       iconBg: "bg-amber-50 text-amber-600",
       ring: "group-hover:ring-amber-100",
+      gradient: "bg-gradient-to-br from-amber-100/70 via-white to-white",
     },
     {
       title: metrics?.conversionRate?.title || "Conversion Rate",
@@ -58,6 +60,7 @@ export default function MetricCards({ metrics, isLoading }: MetricCardsProps) {
       icon: Award,
       iconBg: "bg-emerald-50 text-emerald-600",
       ring: "group-hover:ring-emerald-100",
+      gradient: "bg-gradient-to-br from-emerald-100/70 via-white to-white",
     },
     {
       title: metrics?.disqualificationRate?.title || "Disqualification Rate",
@@ -68,6 +71,7 @@ export default function MetricCards({ metrics, isLoading }: MetricCardsProps) {
       icon: DollarSign,
       iconBg: "bg-rose-50 text-rose-600",
       ring: "group-hover:ring-rose-100",
+      gradient: "bg-gradient-to-br from-rose-100/70 via-white to-white",
     },
   ];
 
@@ -78,11 +82,11 @@ export default function MetricCards({ metrics, isLoading }: MetricCardsProps) {
         return (
           <Card
             key={idx}
-            className="group shadow-sm border-gray-100 rounded-2xl transition-all duration-200 ease-out hover:shadow-md hover:-translate-y-0.5 hover:border-gray-200"
+            className={`group border-none shadow-sm border-gray-100 rounded-2xl transition-all duration-200 ease-out hover:shadow-md hover:-translate-y-0.5 hover:border-gray-200 ${item.gradient}`}
           >
             <CardContent className="p-5">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-muted-foreground">
+                <span className="text-md font-medium text-muted-foreground">
                   {item.title}
                 </span>
                 <div
