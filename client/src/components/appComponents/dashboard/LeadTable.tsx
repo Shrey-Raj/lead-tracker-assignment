@@ -25,15 +25,15 @@ export default function LeadTable({ leads, onStatusChange }: LeadTableProps) {
       <CardHeader className="px-6 py-4 border-b border-gray-100">
         <CardTitle className="text-base font-semibold text-gray-900">Recent Leads</CardTitle>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 max-h-[65vh] overflow-y-auto relative">
         <Table>
           <TableHeader className="bg-gray-50/50">
             <TableRow>
-              <TableHead className="px-6">Lead Name</TableHead>
-              <TableHead className="px-6">Email</TableHead>
-              <TableHead className="px-6">Phone</TableHead>
-              <TableHead className="px-6">Status</TableHead>
-              <TableHead className="px-6">Created At</TableHead>
+              <TableHead className="px-6 font-extrabold">Lead Name</TableHead>
+              <TableHead className="px-6 font-extrabold">Email</TableHead>
+              <TableHead className="px-6 font-extrabold">Phone</TableHead>
+              <TableHead className="px-6 font-extrabold">Status</TableHead>
+              <TableHead className="px-6 font-extrabold">Created At</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
