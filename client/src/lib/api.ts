@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Lead, CreateLeadPayload, LeadStatus, MetricsResponse, ApiResponse, LeadListResponse, MetricsData } from '@/types/lead';
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1/leads',
+  baseURL: process.env.SERVER_URL,
   headers: {
     'Content-Type': 'application/json',
   },
